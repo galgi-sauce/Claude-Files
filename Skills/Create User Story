@@ -1,0 +1,77 @@
+This skill creates a concise, well-structured Jira user story by interviewing the user, challenging their thinking, then filing the ticket directly.
+
+## Step 1: Gather the basics
+
+Ask conversationally (free text, not the elicitation tool):
+
+1. **Which dev team (Jira project key)?** — e.g. GROW, CORE, DP, TAB, QUIC.
+2. **What is the problem you're trying to solve?**
+3. **What is the proposed solution?**
+
+Do NOT ask about open questions yet — that comes in Step 2.
+
+## Step 2: Challenge and surface open questions
+
+After receiving the problem and solution, **think hard** about what the user might have missed. Consider:
+
+- Edge cases that could break the solution or require special handling.
+- Implicit dependencies on other teams, systems, or features.
+- Ambiguity in scope — is it clear what's in and what's out?
+- Impact on existing users or flows.
+- Data, design, or integration considerations.
+- Rollout concerns — should this be gradual, feature-flagged, etc.?
+
+Then present the user with:
+
+1. **A short list of open questions you think the ticket should include** (2–4 questions). Frame them as things the dev team will need answered. For example: "Should this apply retroactively or only to new entries?" or "Do we need a fallback if X is unavailable?"
+2. Ask the user: **"Would you add, remove, or change any of these?"**
+
+Wait for confirmation or edits before proceeding. The user may also add their own open questions.
+
+## Step 3: Create the ticket
+
+Use the `Atlassian:createJiraIssue` tool with:
+
+- `cloudId`: `say2eat.atlassian.net`
+- `projectKey`: whatever the user provided
+- `issueTypeName`: `Story`
+- `summary`: a short, clear title derived from the problem/solution. **Keep it under 8 words.** The user does NOT provide this — write it yourself.
+- `description`: formatted as described below
+- `contentFormat`: `markdown`
+
+### Description format
+
+The description MUST follow this exact structure. Pay close attention to the spacing — there must be **two blank lines** between the last bullet of a section and the next section header:
+Problem
+
+First point.
+Second point.
+
+Solution
+
+First point.
+Second point.
+
+Open Questions
+
+First question?
+Second question?
+
+
+Rules:
+- Section headers are bold text on their own line, followed by a single blank line, then bullets.
+- Between the last bullet of a section and the next section header, use **two blank lines** (one empty line of visual separation).
+- Every section gets bullet points — even if there's only one point.
+- **Every bullet ends with proper punctuation.** Statements end with a period. Questions end with a question mark.
+- If after Step 2 there are genuinely no open questions, include the section with: `- None at this time.`
+- **Be ruthlessly concise.** Strip filler words. No "This ticket aims to..." or "The goal of this story is...". Just state the facts. Every word must earn its place.
+- Do NOT add context the user didn't provide. Do NOT pad bullets to make the ticket look more substantial.
+- Do NOT add an acceptance criteria section or any other section unless the user explicitly asked for it.
+
+## Step 4: Confirm
+
+After creation, share the ticket key and a direct link in this format:
+
+`https://say2eat.atlassian.net/browse/{TICKET-KEY}`
+
+Keep the confirmation short — just the key, the link, and a one-liner summary. Done.
